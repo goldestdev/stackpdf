@@ -124,21 +124,21 @@ const TOOLS = [
   },
   {
     title: 'PDF to Excel',
-    description: 'Convert PDF tables to Excel spreadsheets.',
+    description: 'Convert PDF tables to Excel spreadsheets (Powered by Cloudmersive).',
     icon: Table2,
     href: '/pdf-to-excel',
     color: '#16a34a'
   },
   {
     title: 'PDF to PowerPoint',
-    description: 'Convert PDF pages to PowerPoint slides.',
+    description: 'Convert PDF pages to PowerPoint slides (Powered by Cloudmersive).',
     icon: MonitorPlay,
     href: '/pdf-to-pptx',
     color: '#c2410c'
   },
   {
     title: 'Office to PDF',
-    description: 'Convert Word, Excel, and PowerPoint files to PDF.',
+    description: 'Convert Word, Excel, and PowerPoint files to PDF (Powered by Cloudmersive).',
     icon: Printer,
     href: '/office-to-pdf',
     color: '#dc2626'

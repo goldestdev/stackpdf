@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# StackPDF – Your Personal PDF Swiss Army Knife 🛠️
 
-First, run the development server:
+**StackPDF** is a secure, private, and powerful PDF toolkit that runs primarily in your browser. It combines the speed of local processing with the power of cloud APIs for advanced conversions.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+![StackPDF Dashboard](https://github.com/goldestdev/stackpdf/assets/placeholder/dashboard.png)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 🔒 100% Local & Private (Client-Side)
+These tools run entirely in your browser. Your files never leave your device.
+- **Merge PDF**: Combine multiple files.
+- **Split PDF**: Extract pages or split into individual files.
+- **Organize PDF**: Reorder, rotate, or delete pages.
+- **Images to PDF**: Convert JPG, PNG, GIF to PDF.
+- **PDF to Images**: Extract pages as high-quality images.
+- **OCR (PDF to Text)**: Extract text from scanned PDFs.
+- **Protect/Unlock**: Add or remove password encryption.
+- **Watermark**: Add custom text stamps.
+- **Form Flattening**: Lock interactive forms.
+- **Sign PDF**: Add your signature.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### ☁️ Advanced Conversions (API Powered)
+These tools use the [Cloudmersive API](https://cloudmersive.com) for high-fidelity conversion.
+- **PDF to Word (.docx)**: Editable Word documents.
+- **PDF to Excel (.xlsx)**: Extract tables to spreadsheets.
+- **PDF to PowerPoint (.pptx)**: Convert slides.
+- **Office to PDF**: Convert Word, Excel, and PPT back to PDF.
 
-## Learn More
+> **Note**: API uploads are limited to **3.5MB** (Free Tier Limit).
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Getting Started
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Prerequisites
+- Node.js 18+
+- A [Cloudmersive API Key](https://cloudmersive.com) (Free)
 
-## Deploy on Vercel
+### Installation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/goldestdev/stackpdf.git
+    cd stackpdf
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
+
+3.  **Configure Environment**:
+    Create a `.env.local` file in the root directory:
+    ```env
+    CLOUDMERSIVE_API_KEY=your_api_key_here
+    ```
+
+4.  **Run Locally**:
+    ```bash
+    npm run dev
+    ```
+    Open [http://localhost:3000](http://localhost:3000).
+
+---
+
+## 🌐 Deploying to Vercel
+
+This project is optimized for deployment on [Vercel](https://vercel.com).
+
+1.  **Push to GitHub**: Make sure your code is on GitHub.
+2.  **Import Project**: Go to Vercel Dashboard -> "Add New..." -> "Project" -> Select your repo.
+3.  **Environment Variables**:
+    - In the "Environment Variables" section, add:
+      - Key: `CLOUDMERSIVE_API_KEY`
+      - Value: `your_api_key_from_cloudmersive`
+4.  **Deploy**: Click **Deploy**.
+
+That's it! Your personal PDF toolbox is now live. 🚀
+
+## 🛠️ Built With
+- **Next.js 15** (App Router)
+- **TypeScript**
+- **Tailwind CSS**
+- **pdf-lib** & **pdf.js** (PDF manipulation)
+- **Cloudmersive SDK** (Advanced conversions)
+- **Lucide React** (Icons)
+
+## 📄 License
+MIT License. Feel free to use and modify for personal or commercial use.
