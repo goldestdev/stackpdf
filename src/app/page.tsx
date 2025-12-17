@@ -9,7 +9,13 @@ import {
   Move,
   Maximize2,
   Shield,
-  FileText
+  FileText,
+  Stamp,
+  FileCog,
+  FileCode,
+  PenTool,
+  Layers,
+  FileType
 } from 'lucide-react';
 import ToolCard from '@/components/ToolCard';
 import styles from './page.module.css';
@@ -70,6 +76,48 @@ const TOOLS = [
     icon: FileText,
     href: '/ocr',
     color: '#14b8a6'
+  },
+  {
+    title: 'Add Watermark',
+    description: 'Overlay text stamps on your PDF pages.',
+    icon: Stamp,
+    href: '/watermark',
+    color: '#ec4899'
+  },
+  {
+    title: 'Edit Metadata',
+    description: 'Update PDF properties like title, author, and keywords.',
+    icon: FileCog,
+    href: '/metadata',
+    color: '#06b6d4'
+  },
+  {
+    title: 'Markdown to PDF',
+    description: 'Convert simple markdown text into a PDF document.',
+    icon: FileCode,
+    href: '/markdown-to-pdf',
+    color: '#3b82f6'
+  },
+  {
+    title: 'Sign PDF',
+    description: 'Draw your signature and place it on a PDF document.',
+    icon: PenTool,
+    href: '/sign',
+    color: '#a855f7'
+  },
+  {
+    title: 'Flatten PDF',
+    description: 'Lock form fields and annotations to prevent further editing.',
+    icon: Layers,
+    href: '/flatten',
+    color: '#f97316'
+  },
+  {
+    title: 'PDF to Word',
+    description: 'Convert PDF to editable Word document (Powered by Cloudmersive).',
+    icon: FileType,
+    href: '/pdf-to-word',
+    color: '#2563eb'
   }
 ];
 
