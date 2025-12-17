@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
         const externalFormData = new FormData();
         externalFormData.append('inputFile', new Blob([buffer]), file.name);
 
-        const response = await fetch('https://api.cloudmersive.com/convert/pdf/to/docx', {
+        const response = await fetch('https://api.cloudmersive.com/convert/pdf/to/pptx', {
             method: 'POST',
             headers: {
                 'Apikey': apiKey,
@@ -41,12 +41,12 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: `Cloudmersive API failed: ${response.statusText}` }, { status: response.status });
         }
 
-        const docxBuffer = await response.arrayBuffer();
+        const pptxBuffer = await response.arrayBuffer();
 
-        return new NextResponse(docxBuffer, {
+        return new NextResponse(pptxBuffer, {
             headers: {
-                'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                'Content-Disposition': `attachment; filename="${file.name.replace('.pdf', '')}.docx"`,
+                'Content-Type': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                'Content-Disposition': `attachment; filename="${file.name.replace('.pdf', '')}.pptx"`,
             },
         });
 

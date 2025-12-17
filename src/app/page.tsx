@@ -15,7 +15,10 @@ import {
   FileCode,
   PenTool,
   Layers,
-  FileType
+  FileType,
+  Table2,
+  MonitorPlay,
+  Printer
 } from 'lucide-react';
 import ToolCard from '@/components/ToolCard';
 import styles from './page.module.css';
@@ -118,6 +121,27 @@ const TOOLS = [
     icon: FileType,
     href: '/pdf-to-word',
     color: '#2563eb'
+  },
+  {
+    title: 'PDF to Excel',
+    description: 'Convert PDF tables to Excel spreadsheets.',
+    icon: Table2,
+    href: '/pdf-to-excel',
+    color: '#16a34a'
+  },
+  {
+    title: 'PDF to PowerPoint',
+    description: 'Convert PDF pages to PowerPoint slides.',
+    icon: MonitorPlay,
+    href: '/pdf-to-pptx',
+    color: '#c2410c'
+  },
+  {
+    title: 'Office to PDF',
+    description: 'Convert Word, Excel, and PowerPoint files to PDF.',
+    icon: Printer,
+    href: '/office-to-pdf',
+    color: '#dc2626'
   }
 ];
 

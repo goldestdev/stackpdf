@@ -2,12 +2,12 @@
 'use client';
 
 import { useState } from 'react';
-import { Loader2, FileType, Check, AlertCircle } from 'lucide-react';
+import { Loader2, FileText, Check, AlertCircle } from 'lucide-react';
 import DropZone from '@/components/DropZone';
 import styles from '@/app/merge/page.module.css';
 import Link from 'next/link';
 
-export default function PdfToWordFeature() {
+export default function OfficeToPdfFeature() {
     const [file, setFile] = useState<File | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
     const [error, setError] = useState('');
@@ -36,28 +36,29 @@ export default function PdfToWordFeature() {
             const formData = new FormData();
             formData.append('file', file);
 
-            const response = await fetch('/api/pdf-to-word', {
+            const response = await fetch('/api/office-to-pdf', {
                 method: 'POST',
                 body: formData,
             });
 
             if (!response.ok) {
-                throw new Error('Conversion failed on server');
+                const data = await response.json();
+                throw new Error(data.error || 'Conversion failed on server');
             }
 
             const blob = await response.blob();
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = file.name.replace('.pdf', '') + '.docx';
+            a.download = file.name.replace(/\.[^/.]+$/, "") + '.pdf';
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
 
-        } catch (err) {
+        } catch (err: any) {
             console.error(err);
-            setError('Failed to convert. Please check if the API key is configured correctly.');
+            setError(err.message || 'Failed to convert. Please check if the API key is configured correctly.');
         } finally {
             setIsProcessing(false);
         }
@@ -67,8 +68,8 @@ export default function PdfToWordFeature() {
         <div className="container" style={{ paddingBottom: '4rem' }}>
             <header className={styles.header}>
                 <Link href="/" className={styles.backLink}>&larr; Back to Tools</Link>
-                <h1 className={styles.title}>PDF to Word</h1>
-                <p className={styles.subtitle}>Convert PDF to editable Word (DOCX) using Cloudmersive API.</p>
+                <h1 className={styles.title}>Office to PDF</h1>
+                <p className={styles.subtitle}>Convert Word, Excel, and PowerPoint files to PDF.</p>
             </header>
 
             <div className={styles.workspace}>
@@ -76,13 +77,21 @@ export default function PdfToWordFeature() {
                     <DropZone
                         onDrop={handleDrop}
                         maxFiles={1}
+                        accept={{
+                            'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+                            'application/msword': ['.doc'],
+                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
+                            'application/vnd.ms-excel': ['.xls'],
+                            'application/vnd.openxmlformats-officedocument.presentationml.presentation': ['.pptx'],
+                            'application/vnd.ms-powerpoint': ['.ppt']
+                        }}
                         className={styles.dropZone}
-                        description="Drag & drop a PDF to convert"
+                        description="Drag & drop Word, Excel, or PowerPoint files"
                     />
                 ) : (
                     <div className={styles.fileList} style={{ maxWidth: '600px', margin: '0 auto' }}>
                         <div className={styles.fileItem}>
-                            <FileType size={24} className="text-blue-600" />
+                            <FileText size={24} className="text-blue-500" />
                             <span className={styles.fileName}>{file.name}</span>
                             <button onClick={() => setFile(null)} className={styles.removeBtn}><Check size={16} /></button>
                         </div>
@@ -98,7 +107,7 @@ export default function PdfToWordFeature() {
                             onClick={handleConvert}
                             disabled={isProcessing}
                         >
-                            {isProcessing ? <Loader2 className="animate-spin" /> : 'Convert to Word'}
+                            {isProcessing ? <Loader2 className="animate-spin" /> : 'Convert to PDF'}
                         </button>
                     </div>
                 )}
