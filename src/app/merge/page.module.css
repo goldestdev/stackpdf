@@ -1,0 +1,131 @@
+.header {
+    padding: var(--space-8) 0;
+    text-align: center;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: var(--space-2);
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.backLink {
+    display: block;
+    margin-bottom: var(--space-4);
+    color: var(--text-tertiary);
+    font-size: 0.9rem;
+}
+
+.backLink:hover {
+    color: var(--accent-primary);
+}
+
+.workspace {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.dropZone {
+    margin-bottom: var(--space-8);
+}
+
+.fileList {
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    border: 1px solid var(--border-subtle);
+}
+
+.listTitle {
+    font-size: 1.1rem;
+    margin-bottom: var(--space-4);
+    font-weight: 600;
+}
+
+.listGrid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+}
+
+.fileItem {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    gap: var(--space-3);
+}
+
+.fileIcon {
+    color: var(--accent-primary);
+    flex-shrink: 0;
+}
+
+.fileName {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.95rem;
+}
+
+.actions {
+    display: flex;
+    gap: var(--space-2);
+}
+
+.actionBtn,
+.removeBtn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+}
+
+.actionBtn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
+
+.actionBtn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.removeBtn:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+.mergeBtn {
+    width: 100%;
+    padding: var(--space-4);
+    font-size: 1.1rem;
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
