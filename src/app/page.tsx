@@ -24,6 +24,7 @@ import ToolCard from '@/components/ToolCard';
 import styles from './page.module.css';
 
 const TOOLS = [
+  // 1. Core Essentials (Most Common)
   {
     title: 'Merge PDF',
     description: 'Combine multiple PDF files into one single document seamlessly.',
@@ -32,18 +33,34 @@ const TOOLS = [
     color: '#3b82f6'
   },
   {
+    title: 'PDF to Word',
+    description: 'Convert PDF to editable Word document (Powered by Cloudmersive).',
+    icon: FileType,
+    href: '/pdf-to-word',
+    color: '#2563eb'
+  },
+  {
+    title: 'Office to PDF',
+    description: 'Convert Word, Excel, and PowerPoint files to PDF (Powered by Cloudmersive).',
+    icon: Printer,
+    href: '/office-to-pdf',
+    color: '#dc2626'
+  },
+  {
     title: 'Split PDF',
     description: 'Separate one page or a whole set for easy conversion into independent PDF files.',
     icon: Scissors,
     href: '/split',
     color: '#ef4444'
   },
+
+  // 2. Business & Editing
   {
-    title: 'Optimize PDF',
-    description: 'Reduce file size while keeping the best quality associated with your data.',
-    icon: Maximize2, // Using Maximize2 as a proxy/placeholder icon for now, usually Minimize used but name conflict
-    href: '/optimize',
-    color: '#10b981'
+    title: 'Sign PDF',
+    description: 'Draw your signature and place it on a PDF document.',
+    icon: PenTool,
+    href: '/sign',
+    color: '#a855f7'
   },
   {
     title: 'Images to PDF',
@@ -53,11 +70,11 @@ const TOOLS = [
     color: '#f59e0b'
   },
   {
-    title: 'PDF to Images',
-    description: 'Convert each page of your PDF into top quality images.',
-    icon: FileImage,
-    href: '/pdf-to-img',
-    color: '#8b5cf6'
+    title: 'Optimize PDF',
+    description: 'Reduce file size while keeping the best quality associated with your data.',
+    icon: Maximize2,
+    href: '/optimize',
+    color: '#10b981'
   },
   {
     title: 'Organize PDF',
@@ -66,12 +83,21 @@ const TOOLS = [
     href: '/organize',
     color: '#ec4899'
   },
+
+  // 3. Advanced Conversions
   {
-    title: 'Protect PDF',
-    description: 'Encrypt your PDF with a password to keep sensitive data confidential.',
-    icon: Shield,
-    href: '/protect',
-    color: '#6366f1'
+    title: 'PDF to Excel',
+    description: 'Convert PDF tables to Excel spreadsheets (Powered by Cloudmersive).',
+    icon: Table2,
+    href: '/pdf-to-excel',
+    color: '#16a34a'
+  },
+  {
+    title: 'PDF to PowerPoint',
+    description: 'Convert PDF pages to PowerPoint slides (Powered by Cloudmersive).',
+    icon: MonitorPlay,
+    href: '/pdf-to-pptx',
+    color: '#c2410c'
   },
   {
     title: 'PDF to Text',
@@ -79,6 +105,29 @@ const TOOLS = [
     icon: FileText,
     href: '/ocr',
     color: '#14b8a6'
+  },
+  {
+    title: 'PDF to Images',
+    description: 'Convert each page of your PDF into top quality images.',
+    icon: FileImage,
+    href: '/pdf-to-img',
+    color: '#8b5cf6'
+  },
+
+  // 4. Security & Utilities
+  {
+    title: 'Flatten PDF',
+    description: 'Lock form fields and annotations to prevent further editing.',
+    icon: Layers,
+    href: '/flatten',
+    color: '#f97316'
+  },
+  {
+    title: 'Protect PDF',
+    description: 'Encrypt your PDF with a password to keep sensitive data confidential.',
+    icon: Shield,
+    href: '/protect',
+    color: '#6366f1'
   },
   {
     title: 'Add Watermark',
@@ -100,48 +149,6 @@ const TOOLS = [
     icon: FileCode,
     href: '/markdown-to-pdf',
     color: '#3b82f6'
-  },
-  {
-    title: 'Sign PDF',
-    description: 'Draw your signature and place it on a PDF document.',
-    icon: PenTool,
-    href: '/sign',
-    color: '#a855f7'
-  },
-  {
-    title: 'Flatten PDF',
-    description: 'Lock form fields and annotations to prevent further editing.',
-    icon: Layers,
-    href: '/flatten',
-    color: '#f97316'
-  },
-  {
-    title: 'PDF to Word',
-    description: 'Convert PDF to editable Word document (Powered by Cloudmersive).',
-    icon: FileType,
-    href: '/pdf-to-word',
-    color: '#2563eb'
-  },
-  {
-    title: 'PDF to Excel',
-    description: 'Convert PDF tables to Excel spreadsheets (Powered by Cloudmersive).',
-    icon: Table2,
-    href: '/pdf-to-excel',
-    color: '#16a34a'
-  },
-  {
-    title: 'PDF to PowerPoint',
-    description: 'Convert PDF pages to PowerPoint slides (Powered by Cloudmersive).',
-    icon: MonitorPlay,
-    href: '/pdf-to-pptx',
-    color: '#c2410c'
-  },
-  {
-    title: 'Office to PDF',
-    description: 'Convert Word, Excel, and PowerPoint files to PDF (Powered by Cloudmersive).',
-    icon: Printer,
-    href: '/office-to-pdf',
-    color: '#dc2626'
   }
 ];
 
