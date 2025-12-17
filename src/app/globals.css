@@ -1,10 +1,9 @@
-
 :root {
   /* Colors - Dark Theme Focus */
   --bg-app: #0f1115;
   --bg-surface: #181b21;
   --bg-surface-hover: #22262e;
-  
+
   --text-primary: #ffffff;
   --text-secondary: #a1a1aa;
   --text-tertiary: #71717a;
@@ -12,7 +11,7 @@
   --accent-primary: #3b82f6;
   --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
   --accent-glow: rgba(59, 130, 246, 0.5);
-  
+
   --border-subtle: rgba(255, 255, 255, 0.08);
   --border-highlight: rgba(255, 255, 255, 0.15);
 
@@ -39,7 +38,7 @@
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  
+
   /* Animation */
   --transition-normal: 200ms ease;
   --transition-fast: 150ms ease;
@@ -54,7 +53,14 @@ body {
 
 body {
   color: var(--text-primary);
-  background: var(--bg-app);
+  background-color: var(--bg-app);
+  /* Subtle dot pattern */
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: 0 0, 16px 16px;
+
   font-family: var(--font-inter), sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

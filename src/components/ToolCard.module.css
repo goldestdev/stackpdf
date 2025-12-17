@@ -12,10 +12,11 @@
 }
 
 .card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px) scale(1.02);
     background: var(--bg-surface-hover);
-    border-color: var(--border-highlight);
-    box-shadow: var(--shadow-lg);
+    border-color: rgba(59, 130, 246, 0.4);
+    /* Blue glow */
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
 .card::before {

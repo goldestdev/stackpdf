@@ -152,7 +152,8 @@ export default function Home() {
         <div className="container">
           <div className={styles.heroContent}>
             <h1 className={styles.heroTitle}>
-              Your Personal <span className="text-gradient">PDF Toolbox</span>
+              Your Personal Local <br />
+              <span className="text-gradient">PDF Swiss Army Knife</span>
             </h1>
             <p className={styles.heroSubtitle}>
               Secure, private, and powerful PDF tools. All processing runs locally in your browser.
