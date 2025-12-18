@@ -1,0 +1,49 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - link "← Back to Tools" [ref=e5] [cursor=pointer]:
+        - /url: /
+      - heading "Organize PDF" [level=1] [ref=e6]
+      - paragraph [ref=e7]: Drag pages to reorder. Rotate or delete unwanted pages.
+    - generic [ref=e9]:
+      - generic [ref=e11]:
+        - img "Page 1" [ref=e13]
+        - generic [ref=e14]:
+          - button "Drag to move" [ref=e15]:
+            - img [ref=e16]
+          - generic [ref=e23]:
+            - button "Rotate" [ref=e24]:
+              - img [ref=e25]
+            - button "Remove" [ref=e28]:
+              - img [ref=e29]
+        - generic [ref=e32]: "1"
+      - status [ref=e33]
+      - generic [ref=e34]:
+        - button "Save PDF" [ref=e35] [cursor=pointer]:
+          - img [ref=e36]
+          - text: Save PDF
+        - button "Cancel" [ref=e38] [cursor=pointer]
+  - contentinfo [ref=e39]:
+    - generic [ref=e41]:
+      - paragraph [ref=e42]: © 2025 StackPDF. All rights reserved.
+      - paragraph [ref=e43]: Built by GoldestDev
+  - button "Recent Files" [ref=e44]:
+    - img [ref=e45]
+  - generic [ref=e49]:
+    - generic [ref=e50]:
+      - heading "Recent Files" [level=2] [ref=e51]:
+        - img [ref=e52]
+        - text: Recent Files
+      - button [ref=e56]:
+        - img [ref=e57]
+    - generic [ref=e61]:
+      - img [ref=e62]
+      - paragraph [ref=e65]: No recent files.
+      - paragraph [ref=e66]: Files you process will appear here.
+  - button "Open Next.js Dev Tools" [ref=e72] [cursor=pointer]:
+    - img [ref=e73]
+  - alert [ref=e76]
+```
