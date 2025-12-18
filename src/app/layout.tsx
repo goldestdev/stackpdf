@@ -33,9 +33,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const fontClass = inter?.className || 'font-sans';
   return (
     <html lang="en">
-      <body className={`${inter.className} min-h-screen flex flex-col`}>
+      <body className={`${fontClass} min-h-screen flex flex-col`}>
         <GlobalInit />
         <HistoryProvider>
           <div className="flex-grow">

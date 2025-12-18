@@ -73,7 +73,10 @@ export function HistoryProvider({ children }: { children: React.ReactNode }) {
     };
 
     const addToHistory = async (fileBlob: Blob, filename: string, tool: string) => {
-        const id = crypto.randomUUID();
+        // Safe ID generation (works in non-secure contexts too)
+        const id = Date.now().toString(36) + Math.random().toString(36).substring(2);
+        console.log('Adding to history:', { id, filename, tool });
+
         const newItem: HistoryItem = {
             id,
             filename,
