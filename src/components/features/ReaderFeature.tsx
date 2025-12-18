@@ -18,6 +18,7 @@ export default function ReaderFeature() {
     const [rotation, setRotation] = useState<number>(0);
     const [isProcessing, setIsProcessing] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
+    const [viewMode, setViewMode] = useState<'single' | 'continuous'>('single');
 
     // PDF State
     const [pdfDoc, setPdfDoc] = useState<pdfjsLib.PDFDocumentProxy | null>(null);
@@ -27,17 +28,32 @@ export default function ReaderFeature() {
     const { addToHistory, history } = useHistory();
     const searchParams = useSearchParams();
 
+    // Responsive Check
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 768) {
+                setViewMode('continuous');
+                // Fit Width logic approx: Mobile screen width / standard A4 width (approx 600px rendered)
+                // Actually, CSS handles w-100%, so we just need a decent resolution scale
+                setScale(window.devicePixelRatio > 1 ? 1.5 : 1.0);
+            }
+        };
+
+        // Initial check
+        handleResize();
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     // Check for history ID on mount
     useEffect(() => {
         const historyId = searchParams.get('historyId');
         if (historyId) {
             const item = history.find(h => h.id === historyId);
             if (item) {
-                // Initialize from history
                 setFile(item.fileBlob);
                 setFileName(item.filename);
-                // If it's not a PDF (e.g. image or something else?), we might need to handle it.
-                // But for now, assume PDF Reader handles PDFs.
             }
         }
     }, [searchParams, history]);
@@ -56,8 +72,6 @@ export default function ReaderFeature() {
                 await addToHistory(f, f.name, 'Reader');
                 setIsProcessing(false);
             } else {
-                // Assuming it's an Office file -> Convert
-                // Check extension simplisticly
                 const ext = f.name.split('.').pop()?.toLowerCase();
                 if (['docx', 'doc', 'pptx', 'ppt', 'xlsx', 'xls'].includes(ext || '')) {
                     await convertOfficeToPdf(f);
@@ -118,11 +132,10 @@ export default function ReaderFeature() {
         loadPdf();
     }, [file]);
 
-    // Render Page
-    const renderPage = useCallback(async () => {
-        if (!pdfDoc || !canvasRef.current) return;
+    // Render SINGLE Page
+    const renderSinglePage = useCallback(async () => {
+        if (!pdfDoc || !canvasRef.current || viewMode !== 'single') return;
 
-        // Cancel previous render if any
         if (renderTaskRef.current) {
             renderTaskRef.current.cancel();
         }
@@ -152,11 +165,11 @@ export default function ReaderFeature() {
                 console.error('Render error:', e);
             }
         }
-    }, [pdfDoc, currentPage, scale, rotation]);
+    }, [pdfDoc, currentPage, scale, rotation, viewMode]);
 
     useEffect(() => {
-        renderPage();
-    }, [renderPage]);
+        renderSinglePage();
+    }, [renderSinglePage]);
 
 
     // Controls
@@ -165,10 +178,11 @@ export default function ReaderFeature() {
     const nextPage = () => setCurrentPage(prev => Math.min(prev + 1, numPages));
     const prevPage = () => setCurrentPage(prev => Math.max(prev - 1, 1));
     const rotate = () => setRotation(prev => (prev + 90) % 360);
+    const toggleViewMode = () => setViewMode(prev => prev === 'single' ? 'continuous' : 'single');
 
     return (
         <div className={styles.container}>
-            <header className={styles.header}>
+            <header className={`${styles.header} ${file ? 'hidden md:block' : ''}`}>
                 <Link href="/" className={styles.backLink}>&larr; Back to Tools</Link>
                 <h1 className={styles.title}>Universal Reader</h1>
                 <p className={styles.subtitle}>Read PDF, Word, Excel, and PowerPoint files instantly.</p>
@@ -214,14 +228,19 @@ export default function ReaderFeature() {
                             <button onClick={zoomIn} className={styles.iconBtn} title="Zoom In"><ZoomIn size={20} /></button>
                         </div>
 
-                        <div className={styles.toolGroup}>
-                            <button onClick={prevPage} disabled={currentPage <= 1} className={styles.iconBtn} title="Previous Page"><ChevronLeft size={20} /></button>
-                            <span className={styles.pageInfo}>{currentPage} / {numPages}</span>
-                            <button onClick={nextPage} disabled={currentPage >= numPages} className={styles.iconBtn} title="Next Page"><ChevronRight size={20} /></button>
-                        </div>
+                        {viewMode === 'single' && (
+                            <div className={styles.toolGroup}>
+                                <button onClick={prevPage} disabled={currentPage <= 1} className={styles.iconBtn} title="Previous Page"><ChevronLeft size={20} /></button>
+                                <span className={styles.pageInfo}>{currentPage} / {numPages}</span>
+                                <button onClick={nextPage} disabled={currentPage >= numPages} className={styles.iconBtn} title="Next Page"><ChevronRight size={20} /></button>
+                            </div>
+                        )}
 
                         <div className={styles.toolGroup}>
                             <button onClick={rotate} className={styles.iconBtn} title="Rotate"><RotateCw size={20} /></button>
+                            <button onClick={toggleViewMode} className={`${styles.iconBtn} ${viewMode === 'continuous' ? styles.active : ''}`} title="Toggle Continuous Scroll">
+                                {viewMode === 'single' ? <FileText size={20} /> : <div className="flex flex-col gap-0.5"><div className="w-4 h-2 border border-current rounded-sm" /><div className="w-4 h-2 border border-current rounded-sm" /></div>}
+                            </button>
                         </div>
 
                         <button
@@ -229,18 +248,81 @@ export default function ReaderFeature() {
                             onClick={() => { setFile(null); setPdfDoc(null); }}
                             title="Close"
                         >
-                            &times; Close
+                            &times; <span className="hidden md:inline">Close</span>
                         </button>
                     </div>
 
                     {/* Viewer */}
                     <div className={styles.viewerContainer}>
-                        <div className={styles.canvasWrapper}>
-                            <canvas ref={canvasRef} />
-                        </div>
+                        {viewMode === 'single' ? (
+                            <div className={styles.canvasWrapper}>
+                                <canvas ref={canvasRef} />
+                            </div>
+                        ) : (
+                            <div className={styles.continuousContainer}>
+                                {pdfDoc && Array.from({ length: numPages }, (_, i) => (
+                                    <PageCanvas
+                                        key={i}
+                                        pageIndex={i + 1}
+                                        pdfDoc={pdfDoc}
+                                        scale={scale}
+                                        rotation={rotation}
+                                    />
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
+        </div>
+    );
+}
+
+// Helper component for rendering individual pages in continuous mode
+function PageCanvas({ pageIndex, pdfDoc, scale, rotation }: { pageIndex: number, pdfDoc: pdfjsLib.PDFDocumentProxy, scale: number, rotation: number }) {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+
+    useEffect(() => {
+        if (!pdfDoc || !canvasRef.current) return;
+
+        let renderTask: any = null;
+
+        const render = async () => {
+            try {
+                const page = await pdfDoc.getPage(pageIndex);
+                const viewport = page.getViewport({ scale, rotation });
+                const canvas = canvasRef.current;
+                if (!canvas) return;
+
+                const context = canvas.getContext('2d');
+                if (!context) return;
+
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                const renderContext = {
+                    canvasContext: context,
+                    viewport: viewport,
+                };
+
+                // @ts-ignore: pdfjs-dist types mismatch
+                renderTask = page.render(renderContext);
+                await renderTask.promise;
+            } catch (e: any) {
+                // ignore cancel
+            }
+        };
+
+        render();
+
+        return () => {
+            if (renderTask) renderTask.cancel();
+        };
+    }, [pdfDoc, pageIndex, scale, rotation]);
+
+    return (
+        <div className={styles.canvasWrapper}>
+            <canvas ref={canvasRef} />
         </div>
     );
 }
