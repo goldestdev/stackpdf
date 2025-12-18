@@ -18,7 +18,7 @@ export default function PdfToImgPage() {
     useEffect(() => {
         // Set worker source
         // Set worker source locally
-        pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+
     }, []);
 
     const handleDrop = (acceptedFiles: File[]) => {

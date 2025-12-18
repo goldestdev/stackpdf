@@ -18,7 +18,7 @@ export default function OptimizePage() {
     const [status, setStatus] = useState('');
 
     useEffect(() => {
-        pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+
     }, []);
 
     const handleDrop = (files: File[]) => {

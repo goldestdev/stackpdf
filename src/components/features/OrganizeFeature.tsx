@@ -9,6 +9,7 @@ import styles from './OrganizeFeature.module.css';
 import Link from 'next/link';
 import * as pdfjsLib from 'pdfjs-dist';
 import { useHistory } from '@/context/HistoryContext';
+import { createPdfBlob, downloadBlob } from '@/utils/file-utils';
 
 // DnD Kit
 import {
@@ -111,8 +112,7 @@ export default function OrganizePage() {
     );
 
     useEffect(() => {
-        // Set worker source locally
-        pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+
     }, []);
 
     const handleDrop = async (acceptedFiles: File[]) => {
@@ -145,6 +145,10 @@ export default function OrganizePage() {
                         imageUrl: canvas.toDataURL(),
                         rotation: 0
                     });
+
+                    // Yield to main thread to prevent freezing
+                    if (i % 3 === 0) await new Promise(resolve => setTimeout(resolve, 0));
+                    setStatus(`Loading page ${i} of ${numPages}...`);
                 }
             }
             setPages(newPages);
@@ -202,12 +206,12 @@ export default function OrganizePage() {
             });
 
             const pdfBytes = await newPdf.save();
-            const blob = new Blob([pdfBytes as any], { type: 'application/pdf' });
+            const blob = createPdfBlob(pdfBytes);
 
             // Save to History
             await addToHistory(blob, `organized_${file.name}`, 'Organize PDF');
 
-            saveAs(blob, 'organized.pdf');
+            downloadBlob(blob, 'organized.pdf');
 
         } catch (err) {
             console.error(err);

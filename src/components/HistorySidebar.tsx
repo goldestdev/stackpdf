@@ -3,14 +3,14 @@
 import { useState } from 'react';
 import { useHistory } from '@/context/HistoryContext';
 import { History, Download, Trash2, X, FileText, Clock } from 'lucide-react';
-import { saveAs } from 'file-saver';
+import { downloadBlob } from '@/utils/file-utils';
 
 export default function HistorySidebar() {
     const [isOpen, setIsOpen] = useState(false);
     const { history, removeFromHistory, clearHistory } = useHistory();
 
     const handleDownload = (blob: Blob, filename: string) => {
-        saveAs(blob, filename);
+        downloadBlob(blob, filename);
     };
 
     return (

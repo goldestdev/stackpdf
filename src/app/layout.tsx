@@ -26,6 +26,7 @@ export const metadata: Metadata = {
 
 import { HistoryProvider } from "@/context/HistoryContext";
 import HistorySidebar from "@/components/HistorySidebar";
+import GlobalInit from "@/components/GlobalInit";
 
 export default function RootLayout({
   children,
@@ -35,6 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen flex flex-col`}>
+        <GlobalInit />
         <HistoryProvider>
           <div className="flex-grow">
             {children}

@@ -24,7 +24,7 @@ export default function OCRFeature() {
         // We use a CDN for the worker to avoid complex bundler configuration for this MVP
         // In production, you'd want to copy this file to /public
         // Set worker source locally
-        pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+
     }, []);
 
     const handleDrop = (acceptedFiles: File[]) => {
