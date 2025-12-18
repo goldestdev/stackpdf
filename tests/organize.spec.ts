@@ -20,5 +20,5 @@ test('organize tool loads and allows file upload', async ({ page }) => {
     // Should show "Loading pages..." or eventually the page thumbnail
     // Since our dummy PDF is small, it should load fast
     // We can check for "Page 1" text or the thumbnail image presence
-    await expect(page.getByText('Page 1')).toBeVisible();
+    await expect(page.getByAltText('Page 1')).toBeVisible();
 });
