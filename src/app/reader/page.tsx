@@ -1,5 +1,4 @@
-import ReaderFeature from '@/components/features/ReaderFeature';
-import { Suspense } from 'react';
+import ReaderWrapper from '@/components/features/ReaderWrapper';
 
 export const metadata = {
     title: 'Universal Reader | StackPDF',
@@ -8,8 +7,6 @@ export const metadata = {
 
 export default function ReaderPage() {
     return (
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading Reader...</div>}>
-            <ReaderFeature />
-        </Suspense>
+        <ReaderWrapper />
     );
 }
