@@ -24,6 +24,9 @@ export const metadata: Metadata = {
   },
 };
 
+import { HistoryProvider } from "@/context/HistoryContext";
+import HistorySidebar from "@/components/HistorySidebar";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,10 +35,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen flex flex-col`}>
-        <div className="flex-grow">
-          {children}
-        </div>
-        <Footer />
+        <HistoryProvider>
+          <div className="flex-grow">
+            {children}
+          </div>
+          <Footer />
+          <HistorySidebar />
+        </HistoryProvider>
       </body>
     </html>
   );

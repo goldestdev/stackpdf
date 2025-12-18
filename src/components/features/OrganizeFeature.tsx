@@ -8,6 +8,7 @@ import DropZone from '@/components/DropZone';
 import styles from './OrganizeFeature.module.css';
 import Link from 'next/link';
 import * as pdfjsLib from 'pdfjs-dist';
+import { useHistory } from '@/context/HistoryContext';
 
 // DnD Kit
 import {
@@ -100,6 +101,7 @@ export default function OrganizePage() {
     const [pages, setPages] = useState<PageThumbnail[]>([]);
     const [isProcessing, setIsProcessing] = useState(false);
     const [status, setStatus] = useState('');
+    const { addToHistory } = useHistory();
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -187,8 +189,7 @@ export default function OrganizePage() {
             const newPdf = await PDFDocument.create();
 
             const indices = pages.map(p => p.originalIndex);
-            // We load pages one by one to ensure rotation is correct per instance
-            // Copying in bulk is faster but applying individual rotations to re-ordered pages needs care
+
             const copiedPages = await newPdf.copyPages(pdfDoc, indices);
 
             pages.forEach((p, i) => {
@@ -201,8 +202,12 @@ export default function OrganizePage() {
             });
 
             const pdfBytes = await newPdf.save();
-            // @ts-ignore: Uint8Array to BlobPart mismatch
-            saveAs(new Blob([pdfBytes], { type: 'application/pdf' }), 'organized.pdf');
+            const blob = new Blob([pdfBytes as any], { type: 'application/pdf' });
+
+            // Save to History
+            await addToHistory(blob, `organized_${file.name}`, 'Organize PDF');
+
+            saveAs(blob, 'organized.pdf');
 
         } catch (err) {
             console.error(err);
