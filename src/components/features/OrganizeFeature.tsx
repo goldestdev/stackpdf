@@ -1,19 +1,98 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
 import { PDFDocument } from 'pdf-lib';
 import { saveAs } from 'file-saver';
-import { Loader2, Trash2, ArrowLeft, ArrowRight, RotateCw, Check } from 'lucide-react';
+import { Loader2, Trash2, RotateCw, Check, GripVertical, X } from 'lucide-react';
 import DropZone from '@/components/DropZone';
 import styles from './OrganizeFeature.module.css';
 import Link from 'next/link';
 import * as pdfjsLib from 'pdfjs-dist';
 
+// DnD Kit
+import {
+    DndContext,
+    closestCenter,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+    DragEndEvent,
+} from '@dnd-kit/core';
+import {
+    arrayMove,
+    SortableContext,
+    sortableKeyboardCoordinates,
+    useSortable,
+    rectSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
 interface PageThumbnail {
+    id: string;
     originalIndex: number;
     imageUrl: string;
-    rotation: number; // 0, 90, 180, 270 (Not fully implemented in backend logic yet, just UI or basic)
+    rotation: number;
+}
+
+// Sortable Item Component
+function SortableItem(props: {
+    page: PageThumbnail;
+    index: number;
+    onRotate: (id: string) => void;
+    onRemove: (id: string) => void;
+}) {
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging
+    } = useSortable({ id: props.page.id });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.5 : 1,
+        zIndex: isDragging ? 50 : 1,
+    };
+
+    return (
+        <div ref={setNodeRef} style={style} className={styles.pageCard}>
+            <div className={styles.thumbnailWrapper} style={{ transform: `rotate(${props.page.rotation}deg)` }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={props.page.imageUrl} alt={`Page ${props.index + 1}`} className={styles.thumbnail} />
+            </div>
+
+            {/* Overlay Actions */}
+            <div className="absolute inset-x-0 bottom-0 p-2 bg-black/60 backdrop-blur-sm flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity rounded-b-lg">
+                {/* Drag Handle */}
+                <div {...attributes} {...listeners} className="cursor-grab p-1 hover:bg-white/20 rounded text-white" title="Drag to move">
+                    <GripVertical size={16} />
+                </div>
+
+                <div className="flex items-center gap-1">
+                    <button
+                        onClick={() => props.onRotate(props.page.id)}
+                        className="p-1 hover:bg-white/20 rounded text-white"
+                        title="Rotate"
+                    >
+                        <RotateCw size={16} />
+                    </button>
+                    <button
+                        onClick={() => props.onRemove(props.page.id)}
+                        className="p-1 hover:bg-red-500/80 rounded text-red-200 hover:text-white"
+                        title="Remove"
+                    >
+                        <Trash2 size={16} />
+                    </button>
+                </div>
+            </div>
+
+            <div className={styles.pageNumber}>{props.index + 1}</div>
+        </div>
+    );
 }
 
 export default function OrganizePage() {
@@ -22,8 +101,16 @@ export default function OrganizePage() {
     const [isProcessing, setIsProcessing] = useState(false);
     const [status, setStatus] = useState('');
 
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    );
+
     useEffect(() => {
-        pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+        // Set worker source locally
+        pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
     }, []);
 
     const handleDrop = async (acceptedFiles: File[]) => {
@@ -51,7 +138,8 @@ export default function OrganizePage() {
                     // @ts-ignore: pdfjs-dist types mismatch
                     await page.render({ canvasContext: context, viewport }).promise;
                     newPages.push({
-                        originalIndex: i - 1, // 0-based for pdf-lib
+                        id: `page-${i}-${Date.now()}`,
+                        originalIndex: i - 1,
                         imageUrl: canvas.toDataURL(),
                         rotation: 0
                     });
@@ -68,26 +156,25 @@ export default function OrganizePage() {
         }
     };
 
-    const movePage = (index: number, direction: 'left' | 'right') => {
-        if (
-            (direction === 'left' && index === 0) ||
-            (direction === 'right' && index === pages.length - 1)
-        ) return;
-
-        const newPages = [...pages];
-        const target = direction === 'left' ? index - 1 : index + 1;
-        [newPages[index], newPages[target]] = [newPages[target], newPages[index]];
-        setPages(newPages);
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event;
+        if (active.id !== over?.id) {
+            setPages((items) => {
+                const oldIndex = items.findIndex((item) => item.id === active.id);
+                const newIndex = items.findIndex((item) => item.id === over?.id);
+                return arrayMove(items, oldIndex, newIndex);
+            });
+        }
     };
 
-    const removePage = (index: number) => {
-        setPages(prev => prev.filter((_, i) => i !== index));
+    const handleRemove = (id: string) => {
+        setPages(prev => prev.filter(p => p.id !== id));
     };
 
-    const rotatePage = (index: number) => {
-        const newPages = [...pages];
-        newPages[index].rotation = (newPages[index].rotation + 90) % 360;
-        setPages(newPages);
+    const handleRotate = (id: string) => {
+        setPages(prev => prev.map(p =>
+            p.id === id ? { ...p, rotation: (p.rotation + 90) % 360 } : p
+        ));
     };
 
     const handleSave = async () => {
@@ -99,11 +186,9 @@ export default function OrganizePage() {
             const pdfDoc = await PDFDocument.load(await file.arrayBuffer());
             const newPdf = await PDFDocument.create();
 
-            // We need to copy pages. 
-            // Note: random access copy might be inefficient if we load/copy one by one? 
-            // pdf-lib copyPages takes an array of indices.
-
             const indices = pages.map(p => p.originalIndex);
+            // We load pages one by one to ensure rotation is correct per instance
+            // Copying in bulk is faster but applying individual rotations to re-ordered pages needs care
             const copiedPages = await newPdf.copyPages(pdfDoc, indices);
 
             pages.forEach((p, i) => {
@@ -133,7 +218,7 @@ export default function OrganizePage() {
             <header className={styles.header}>
                 <Link href="/" className={styles.backLink}>&larr; Back to Tools</Link>
                 <h1 className={styles.title}>Organize PDF</h1>
-                <p className={styles.subtitle}>Rearrange, rotate, and delete pages.</p>
+                <p className={styles.subtitle}>Drag pages to reorder. Rotate or delete unwanted pages.</p>
             </header>
 
             <div className={styles.workspace}>
@@ -153,23 +238,28 @@ export default function OrganizePage() {
                             </div>
                         ) : (
                             <>
-                                <div className={styles.grid}>
-                                    {pages.map((page, index) => (
-                                        <div key={index} className={styles.pageCard}>
-                                            <div className={styles.thumbnailWrapper} style={{ transform: `rotate(${page.rotation}deg)` }}>
-                                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                <img src={page.imageUrl} alt={`Page ${index + 1}`} className={styles.thumbnail} />
-                                            </div>
-                                            <div className={styles.pageActions}>
-                                                <button onClick={() => movePage(index, 'left')} disabled={index === 0} title="Move Left"><ArrowLeft size={16} /></button>
-                                                <button onClick={() => rotatePage(index)} title="Rotate"><RotateCw size={16} /></button>
-                                                <button onClick={() => removePage(index)} title="Remove" className="text-red-500"><Trash2 size={16} /></button>
-                                                <button onClick={() => movePage(index, 'right')} disabled={index === pages.length - 1} title="Move Right"><ArrowRight size={16} /></button>
-                                            </div>
-                                            <div className={styles.pageNumber}>{index + 1}</div>
-                                        </div>
-                                    ))}
-                                </div>
+                                <DndContext
+                                    sensors={sensors}
+                                    collisionDetection={closestCenter}
+                                    onDragEnd={handleDragEnd}
+                                >
+                                    <div className={styles.grid}>
+                                        <SortableContext
+                                            items={pages.map(p => p.id)}
+                                            strategy={rectSortingStrategy}
+                                        >
+                                            {pages.map((page, index) => (
+                                                <SortableItem
+                                                    key={page.id}
+                                                    page={page}
+                                                    index={index}
+                                                    onRotate={handleRotate}
+                                                    onRemove={handleRemove}
+                                                />
+                                            ))}
+                                        </SortableContext>
+                                    </div>
+                                </DndContext>
 
                                 <div className={styles.bottomBar}>
                                     <button
