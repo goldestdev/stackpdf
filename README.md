@@ -1,90 +1,123 @@
+# StackPDF 📄
 
-# StackPDF – Your Personal PDF Swiss Army Knife 🛠️
+**StackPDF** is a powerful, privacy-first, and fully offline-capable PDF toolkit. It's designed to be your personal "Swiss Army Knife" for documents, requiring no subscriptions, no file uploads to third-party servers (except for specific Office conversions), and no data tracking.
 
-**StackPDF** is a secure, private, and powerful PDF toolkit that runs primarily in your browser. It combines the speed of local processing with the power of cloud APIs for advanced conversions.
+![StackPDF Banner](/public/icon-512.png)
 
-![StackPDF Dashboard](https://github.com/goldestdev/stackpdf/assets/placeholder/dashboard.png)
+## 🚀 Key Features
 
-## ✨ Features
+### 🛠️ Core Tools (100% Local)
+*   **Merge PDF**: Combine multiple PDFs into a single file.
+*   **Split PDF**: Extract specific pages or split by range.
+*   **Organize**: Drag-and-drop page reordering, rotation, and deletion using a visual interface.
+*   **Images to PDF**: Convert JPG/PNGs into a PDF document.
+*   **PDF to Images**: Extract pages as high-quality images.
+*   **Compress**: Reduce file size while maintaining quality.
+*   **Sign**: Draw your signature and place it anywhere on the document.
+*   **Watermark**: Add text watermarks with custom positioning and opacity.
+*   **Protect**: Encrypt your PDF with a password.
+*   **Flatten**: Lock forms and annotations to prevent further editing.
+*   **Metadata**: Edit Title, Author, Subject, and Keywords.
+*   **Markdown to PDF**: Convert markdown text directly to PDF.
+*   **OCR**: Extract text from scanned PDFs (using Tesseract.js).
 
-### 🔒 100% Local & Private (Client-Side)
-These tools run entirely in your browser. Your files never leave your device.
-- **Merge PDF**: Combine multiple files.
-- **Split PDF**: Extract pages or split into individual files.
-- **Organize PDF**: Reorder, rotate, or delete pages.
-- **Images to PDF**: Convert JPG, PNG, GIF to PDF.
-- **PDF to Images**: Extract pages as high-quality images.
-- **OCR (PDF to Text)**: Extract text from scanned PDFs.
-- **Protect/Unlock**: Add or remove password encryption.
-- **Watermark**: Add custom text stamps.
-- **Form Flattening**: Lock interactive forms.
-- **Sign PDF**: Add your signature.
+### ☁️ Advanced Conversions (Powered by Cloudmersive)
+*   **Office to PDF**: Convert Word, Excel, and PowerPoint files to PDF.
+*   **PDF to Office**: Convert PDFs back to editable Word, Excel, and PowerPoint formats.
 
-### ☁️ Advanced Conversions (API Powered)
-These tools use the [Cloudmersive API](https://cloudmersive.com) for high-fidelity conversion.
-- **PDF to Word (.docx)**: Editable Word documents.
-- **PDF to Excel (.xlsx)**: Extract tables to spreadsheets.
-- **PDF to PowerPoint (.pptx)**: Convert slides.
-- **Office to PDF**: Convert Word, Excel, and PPT back to PDF.
-
-> **Note**: API uploads are limited to **3.5MB** (Free Tier Limit).
+### 🌟 Pro Features
+*   **PWA Support**: Install as a native app on your desktop or mobile. Fully works offline.
+*   **Local History**: Auto-saves your recent files to your browser's database (IndexedDB). Never lose your work.
+*   **Dark Mode**: Sleek, modern, and eye-friendly interface.
+*   **Privacy First**: All core processing happens right in your browser.
 
 ---
 
-## 🚀 Getting Started
+## 🛠️ Technology Stack
+
+*   **Framework**: [Next.js 14+](https://nextjs.org/) (App Router)
+*   **Styling**: Vanilla CSS (CSS Modules & Variables)
+*   **PDF Processing**: `pdf-lib`, `pdfjs-dist`
+*   **Drag & Drop**: `@dnd-kit/core`, `react-dropzone`
+*   **Storage**: `idb` (IndexedDB wrapper)
+*   **Testing**: Playwright
+*   **Icons**: `lucide-react`
+
+---
+
+## 🏁 Getting Started
 
 ### Prerequisites
-- Node.js 18+
-- A [Cloudmersive API Key](https://cloudmersive.com) (Free)
+*   Node.js 18+ installed.
+*   A Cloudmersive API Key (free tier available) for Office conversions.
 
 ### Installation
 
-1.  **Clone the repository**:
+1.  **Clone the repository:**
     ```bash
     git clone https://github.com/goldestdev/stackpdf.git
     cd stackpdf
     ```
 
-2.  **Install dependencies**:
+2.  **Install dependencies:**
     ```bash
     npm install
     ```
 
-3.  **Configure Environment**:
+3.  **Environment Setup:**
     Create a `.env.local` file in the root directory:
     ```env
     CLOUDMERSIVE_API_KEY=your_api_key_here
     ```
 
-4.  **Run Locally**:
+4.  **Run the development server:**
     ```bash
     npm run dev
     ```
-    Open [http://localhost:3000](http://localhost:3000).
+
+5.  **Open your browser:**
+    Navigate to [http://localhost:3000](http://localhost:3000).
 
 ---
 
-## 🌐 Deploying to Vercel
+## 🧪 Testing
 
-This project is optimized for deployment on [Vercel](https://vercel.com).
+We use **Playwright** for End-to-End (E2E) testing.
 
-1.  **Push to GitHub**: Make sure your code is on GitHub.
-2.  **Import Project**: Go to Vercel Dashboard -> "Add New..." -> "Project" -> Select your repo.
-3.  **Environment Variables**:
-    - In the "Environment Variables" section, add:
-      - Key: `CLOUDMERSIVE_API_KEY`
-      - Value: `your_api_key_from_cloudmersive`
-4.  **Deploy**: Click **Deploy**.
+1.  **Run all tests:**
+    ```bash
+    npx playwright test
+    ```
 
-That's it! Your personal PDF toolbox is now live. 🚀
+2.  **Run UI Mode (Interactive):**
+    ```bash
+    npx playwright test --ui
+    ```
 
-## 🛠️ Built With
-- **Next.js 15** (App Router)
-- **TypeScript**
-- **Tailwind CSS**
-- **pdf-lib** & **pdf.js** (PDF manipulation)
-- **Cloudmersive SDK** (Advanced conversions)
-- **Lucide React** (Icons)
+3.  **View Report:**
+    ```bash
+    npx playwright show-report
+    ```
 
-## 📄 License
-MIT License. Feel free to use and modify for personal or commercial use.
+---
+
+## 📦 Deployment
+
+### Vercel (Recommended)
+1.  Push your code to GitHub.
+2.  Import the project into Vercel.
+3.  Add the `CLOUDMERSIVE_API_KEY` to the Environment Variables.
+4.  Deploy!
+
+### Docker (Optional)
+(Dockerfile coming soon)
+
+---
+
+## 📜 License
+
+MIT License. Free to use and modify.
+
+---
+
+built with ❤️ by goldestdev
