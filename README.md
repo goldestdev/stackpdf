@@ -19,6 +19,8 @@
 *   **Flatten**: Lock forms and annotations to prevent further editing.
 *   **Metadata**: Edit Title, Author, Subject, and Keywords.
 *   **Markdown to PDF**: Convert markdown text directly to PDF.
+*   **Universal Reader**: A distraction-free viewer for PDF, Word, Excel, and PowerPoint files.
+*   **Mobile Reader**: Optimized "Continuous Scroll" mode for reading on mobile devices.
 *   **OCR**: Extract text from scanned PDFs (using Tesseract.js).
 
 ### ☁️ Advanced Conversions (Powered by Cloudmersive)
