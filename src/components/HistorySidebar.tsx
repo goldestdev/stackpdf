@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import { useHistory } from '@/context/HistoryContext';
-import { History, Download, Trash2, X, FileText, Clock } from 'lucide-react';
+import { History, Download, Trash2, X, FileText, Clock, BookOpen } from 'lucide-react';
 import { downloadBlob } from '@/utils/file-utils';
+import Link from 'next/link';
 
 export default function HistorySidebar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -70,13 +71,22 @@ export default function HistorySidebar() {
                                     <div className="flex gap-2">
                                         <button
                                             onClick={() => handleDownload(item.fileBlob, item.filename)}
-                                            className="flex-1 flex items-center justify-center gap-1.5 py-1.5 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 rounded text-xs font-medium transition-colors"
+                                            className="p-1.5 text-gray-400 hover:text-white hover:bg-white/10 rounded transition-colors"
+                                            title="Download"
                                         >
-                                            <Download size={14} /> Download
+                                            <Download size={14} />
                                         </button>
+                                        <Link
+                                            href={`/reader?historyId=${item.id}`}
+                                            className="p-1.5 text-gray-400 hover:text-blue-400 hover:bg-blue-400/10 rounded transition-colors"
+                                            title="Open in Reader"
+                                        >
+                                            <BookOpen size={14} />
+                                        </Link>
                                         <button
                                             onClick={() => removeFromHistory(item.id)}
-                                            className="px-2 py-1.5 bg-white/5 hover:bg-red-500/20 text-gray-400 hover:text-red-400 rounded transition-colors"
+                                            className="p-1.5 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
+                                            title="Remove from history"
                                         >
                                             <Trash2 size={14} />
                                         </button>

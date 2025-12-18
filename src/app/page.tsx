@@ -18,7 +18,8 @@ import {
   FileType,
   Table2,
   MonitorPlay,
-  Printer
+  Printer,
+  BookOpen
 } from 'lucide-react';
 import ToolCard from '@/components/ToolCard';
 import styles from './page.module.css';
@@ -149,6 +150,14 @@ const TOOLS = [
     icon: FileCode,
     href: '/markdown-to-pdf',
     color: '#3b82f6'
+  },
+  // 5. Reading
+  {
+    title: 'Universal Reader',
+    description: 'Read PDF, Word, Excel, and Powerpoint files instantly.',
+    icon: BookOpen,
+    href: '/reader',
+    color: '#8b5cf6'
   }
 ];
 
