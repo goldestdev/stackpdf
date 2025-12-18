@@ -33,7 +33,7 @@ export default function HistorySidebar() {
             )}
 
             {/* Sidebar Panel */}
-            <div className={`fixed top-0 right-0 h-full w-80 bg-[#181b21] border-l border-white/10 z-50 transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+            <div className={`fixed top-0 right-0 h-full w-full sm:w-80 max-w-[100vw] bg-[#181b21] border-l border-white/10 z-50 transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
                 <div className="flex items-center justify-between p-4 border-b border-white/10">
                     <h2 className="text-lg font-semibold flex items-center gap-2">
                         <History size={20} className="text-blue-500" />
