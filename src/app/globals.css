@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   /* Colors - Dark Theme Focus */
   --bg-app: #0f1115;
